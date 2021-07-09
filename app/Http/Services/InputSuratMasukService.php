@@ -148,4 +148,36 @@ class InputSuratMasukService
             } // if have the exif orientation info
         } // if function exists      
     }
+
+    public function saveImage(PDF $pdf, string $pathToImage): bool
+    {
+        $page = 1;
+
+        if (is_dir($pathToImage)) {
+            $pathToImage = rtrim($pathToImage, '\/').DIRECTORY_SEPARATOR.$page.'.'.$pdf->getOutputFormat();
+        }
+        
+        $imageData = $pdf->getImageData($pathToImage);
+
+        return file_put_contents($pathToImage, $imageData) !== false;
+    }
+
+    public function saveAllPagesAsImages(PDF $pdf, string $directory, string $prefix = ''): array
+    {
+        $numberOfPages = $pdf->getNumberOfPages();
+
+        if ($numberOfPages === 0) {
+            return [];
+        }
+
+        return array_map(function ($pageNumber) use ($pdf, $directory, $prefix) {
+            $pdf->setPage($pageNumber);
+            
+            $destination = "{$directory}/{$prefix}{$pageNumber}.{$pdf->getOutputFormat()}";
+
+            $this->saveImage($pdf, $destination);
+
+            return $destination;
+        }, range(1, $numberOfPages));
+    }
 }
