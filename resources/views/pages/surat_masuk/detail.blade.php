@@ -57,7 +57,8 @@
                 @foreach ($surat_masuk->fileSuratMasuk as $file)
                 @if ($file->fileLocation)
                 @endif
-                <iframe src="{{ $file->fileLocation }}" style="width: 100%;min-height: 100vh;border: none;"></iframe>
+                <img src="{{ $file->fileLocation }}" width="100%" alt="">
+                {{-- <iframe src="{{ $file->fileLocation }}" style="width: 100%;min-height: 100vh;border: none;"></iframe> --}}
                 @endforeach
             </div>
         </div>

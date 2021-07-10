@@ -49,7 +49,7 @@
             @foreach ($surat_masuk->fileSuratMasuk as $file)
 
                 @if ($file->fileLocation)
-                <img src="{{ "$file->lokasi/$file->filename" }}" alt="{{ $file->filename}}" width="100%" srcset="">
+                <img src="{{ $file->filePath }}" width="100%" srcset="">
                 @endif
 
             @endforeach

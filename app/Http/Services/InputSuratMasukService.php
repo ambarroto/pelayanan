@@ -6,6 +6,7 @@ use App\Models\FileSuratMasuk;
 use Carbon\Carbon;
 use App\Models\SuratMasuk;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Spatie\PdfToImage\Pdf;
@@ -49,7 +50,7 @@ class InputSuratMasukService
         }
         $data_file_surat_masuk = [];
         $dir = "file/surat/$tahun/masuk";
-        $path = public_path() . DIRECTORY_SEPARATOR . $dir;
+        $path = public_path($dir);
         foreach ($lampiran as $index => $file) {
             if ($file instanceof UploadedFile) {
                 $type = $file->getClientOriginalExtension();
@@ -67,7 +68,8 @@ class InputSuratMasukService
                     $file_name = $file_name[0];
                     $file_name = "$nomor-$index-$file_name";
                     $pdf->setResolution(100);
-                    $pdf->setOutputFormat('jpeg')->saveAllPagesAsImages($path, "$file_name-");
+                    $pdf->setOutputFormat('jpeg');
+                    $this->saveAllPagesAsImages($pdf, $dir, $file_name);
                     for ($item = 0; $item < $number_of_page; $item++) {
                         $page = $item+1;
                         array_push($data_file_surat_masuk, [
@@ -80,7 +82,7 @@ class InputSuratMasukService
                 } else {
                     $file_name = "$nomor-$index-" . $file->getClientOriginalName();
                     try {
-                        $file->move($path, $file_name);
+                        Storage::put("$dir/$file_name", $file->getContent());
                         $this->correctImageOrientation("$path/$file_name");
                     } catch (\Throwable $th) {
                         DB::rollBack();
@@ -110,7 +112,8 @@ class InputSuratMasukService
                 DB::rollBack();
                 // Event delete file surat masuk
                 foreach ($files as $item) {
-                    if (file_exists($item)) unlink($item);
+                    $lokasi_file = $file['lokasi'] . DIRECTORY_SEPARATOR . $file['filename'];
+                    if (Storage::exists($lokasi_file)) Storage::delete($lokasi_file);
                 }
                 throw new BadRequestException("Gagal menambah file surat masuk.");
             }
@@ -159,7 +162,7 @@ class InputSuratMasukService
         
         $imageData = $pdf->getImageData($pathToImage);
 
-        return file_put_contents($pathToImage, $imageData) !== false;
+        return Storage::put($pathToImage, $imageData) !== false;
     }
 
     public function saveAllPagesAsImages(PDF $pdf, string $directory, string $prefix = ''): array
@@ -173,7 +176,7 @@ class InputSuratMasukService
         return array_map(function ($pageNumber) use ($pdf, $directory, $prefix) {
             $pdf->setPage($pageNumber);
             
-            $destination = "{$directory}/{$prefix}{$pageNumber}.{$pdf->getOutputFormat()}";
+            $destination = "{$directory}/{$prefix}-{$pageNumber}.{$pdf->getOutputFormat()}";
 
             $this->saveImage($pdf, $destination);
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class FileSuratMasuk extends Model
 {
@@ -35,10 +36,18 @@ class FileSuratMasuk extends Model
     {
         $lokasi = $this->lokasi;
         $filename = $this->filename;
-        $lokasi_file = config('app.url') . DIRECTORY_SEPARATOR . $lokasi . DIRECTORY_SEPARATOR . $filename;
-        if (file_exists($lokasi . DIRECTORY_SEPARATOR . $filename)) {
-            return $lokasi_file;
+        $lokasi_file = $lokasi . DIRECTORY_SEPARATOR . $filename;
+        if (Storage::exists($lokasi_file)) {
+            return Storage::url($lokasi_file);
         }
         return 0;
+    }
+
+    public function getFilePathAttribute()
+    {
+        $lokasi = $this->lokasi;
+        $filename = $this->filename;
+        $lokasi_file = "$lokasi/$filename";
+        return $lokasi_file;
     }
 }
