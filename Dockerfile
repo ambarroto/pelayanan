@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     sudo \
-    nano
+    nano \
+    wget
 
 RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN printf "\n" | pecl install imagick
@@ -36,6 +37,14 @@ RUN docker-php-ext-install gd
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# install ghostcript
+RUN wget https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs925/ghostscript-9.25-linux-x86_64.tgz
+
+RUN tar -zxvf ghostscript-9.25-linux-x86_64.tgz
+RUN cd ghostscript-9.25-linux-x86_64
+RUN cd ghostscript-9.25-linux-x86_64 && cp gs-925-linux-x86_64 /usr/local/bin/gs
+RUN chmod +x /usr/local/bin/gs
 
 # Add user for laravel application
 RUN groupadd -g 1000 www
