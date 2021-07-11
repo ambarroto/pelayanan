@@ -38,7 +38,7 @@ class FileSuratMasuk extends Model
         $filename = $this->filename;
         $lokasi_file = $lokasi . DIRECTORY_SEPARATOR . $filename;
         if (Storage::exists($lokasi_file)) {
-            return Storage::url($lokasi_file);
+            return asset($lokasi_file);
         }
         return 0;
     }
