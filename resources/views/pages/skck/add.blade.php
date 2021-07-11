@@ -7,8 +7,8 @@
 
 @section('page_header')
 @include('components.header', [
-    'link' => route('surat_masuk'),
-    'text_link' => 'Daftar Surat Masuk'
+    'link' => route('skck'),
+    'text_link' => 'Daftar SKCK'
 ])
 @endsection
 

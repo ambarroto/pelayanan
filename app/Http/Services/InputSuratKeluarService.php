@@ -6,6 +6,7 @@ use App\Models\FileSuratKeluar;
 use App\Models\SuratKeluar;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Spatie\PdfToImage\Pdf;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -52,23 +53,50 @@ class InputSuratKeluarService
         foreach ($lampiran as $index => $file) {
             $nomor_file = $index + 1;
             if ($file instanceof UploadedFile) {
+                $type = $file->getClientOriginalExtension();
                 $filename = "$nomor-$index-" . $file->getClientOriginalName();
-                try {
-                    $file->move($path, $filename);
-                } catch (\Throwable $th) {
-                    DB::rollBack();
-                    throw new BadRequestException("Gagal mengunggah file ke-$nomor_file.");
+                if ($type == 'pdf') {
+                    try {
+                        $pdf = new Pdf($file);
+                    } catch (\Throwable $th) {
+                        throw new BadRequestException($th->getMessage());
+                    }
+                    $number_of_page = $pdf->getNumberOfPages();
+                    
+                    $file_name = $file->getClientOriginalName();
+                    $file_name = explode(".$type", $file_name);
+                    $file_name = $file_name[0];
+                    $file_name = "$nomor-$index-$file_name";
+                    $pdf->setResolution(100);
+                    $pdf->setOutputFormat('jpeg');
+                    SavePdfAsImageService::saveAllPagesAsImages($pdf, $dir, $file_name);
+                    for ($item = 0; $item < $number_of_page; $item++) {
+                        $page = $item+1;
+                        array_push($data_file_surat_keluar, [
+                            'id_surat_keluar' => $surat_keluar->id,
+                            'lokasi' => $dir,
+                            'filename' => "$file_name-$page.jpeg",
+                            'file' => "$path/$file_name-$page.jpeg"
+                        ]);
+                    }
+                } else {
+                    try {
+                        $file->move($path, $filename);
+                    } catch (\Throwable $th) {
+                        DB::rollBack();
+                        throw new BadRequestException("Gagal mengunggah file ke-$nomor_file.");
+                    }
+                    array_push($data_file_surat_keluar, [
+                        'id_surat_keluar' => $surat_keluar->id,
+                        'lokasi' => $dir,
+                        'filename' => $filename,
+                        'file' => "$path/$filename"
+                    ]);
                 }
             } else {
                 DB::rollBack();
                 throw new BadRequestException("Format file ke-$nomor_file tidak sesuai.");
             }
-            array_push($data_file_surat_keluar, [
-                'id_surat_keluar' => $surat_keluar->id,
-                'lokasi' => $dir,
-                'filename' => $filename,
-                'file' => "$path/$filename"
-            ]);
         }
         $files = [];
         foreach ($data_file_surat_keluar as $index => $file) {
@@ -86,9 +114,6 @@ class InputSuratKeluarService
                 }
                 throw new BadRequestException($th->getMessage());
             }
-        }
-        foreach ($files as $item) {
-            if (file_exists($item)) unlink($item);
         }
         DB::commit();
         return $surat_keluar;

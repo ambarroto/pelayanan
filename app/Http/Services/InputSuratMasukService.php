@@ -54,8 +54,8 @@ class InputSuratMasukService
         foreach ($lampiran as $index => $file) {
             if ($file instanceof UploadedFile) {
                 $type = $file->getClientOriginalExtension();
+                $file_name = "$nomor-$index-" . $file->getClientOriginalName();
                 if ($type == 'pdf') {
-                    $file_name = "$nomor-$index-" . $file->getClientOriginalName();
                     try {
                         $pdf = new Pdf($file);
                     } catch (\Throwable $th) {
@@ -69,7 +69,7 @@ class InputSuratMasukService
                     $file_name = "$nomor-$index-$file_name";
                     $pdf->setResolution(100);
                     $pdf->setOutputFormat('jpeg');
-                    $this->saveAllPagesAsImages($pdf, $dir, $file_name);
+                    SavePdfAsImageService::saveAllPagesAsImages($pdf, $dir, $file_name);
                     for ($item = 0; $item < $number_of_page; $item++) {
                         $page = $item+1;
                         array_push($data_file_surat_masuk, [
@@ -80,10 +80,9 @@ class InputSuratMasukService
                         ]);
                     }
                 } else {
-                    $file_name = "$nomor-$index-" . $file->getClientOriginalName();
                     try {
                         Storage::put("$dir/$file_name", $file->getContent());
-                        $this->correctImageOrientation("$path/$file_name");
+                        correctImageOrientation("$path/$file_name");
                     } catch (\Throwable $th) {
                         DB::rollBack();
                         throw new BadRequestException($th->getMessage());
@@ -120,36 +119,6 @@ class InputSuratMasukService
         }
         DB::commit();
         return $surat;
-    }
-
-    public function correctImageOrientation($filename)
-    {
-        if (function_exists('exif_read_data')) {
-            $exif = exif_read_data($filename);
-            if($exif && isset($exif['Orientation'])) {
-                $orientation = $exif['Orientation'];
-                if($orientation != 1){
-                    $img = imagecreatefromjpeg($filename);
-                    $deg = 0;
-                    switch ($orientation) {
-                        case 3:
-                            $deg = 180;
-                        break;
-                        case 6:
-                            $deg = 270;
-                        break;
-                        case 8:
-                            $deg = 90;
-                        break;
-                    }
-                    if ($deg) {
-                        $img = imagerotate($img, $deg, 0);        
-                    }
-                // then rewrite the rotated image back to the disk as $filename 
-                    imagejpeg($img, $filename, 95);
-                } // if there is some rotation necessary
-            } // if have the exif orientation info
-        } // if function exists      
     }
 
     public function saveImage(PDF $pdf, string $pathToImage): bool

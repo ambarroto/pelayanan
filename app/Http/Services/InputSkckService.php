@@ -6,6 +6,7 @@ use App\Models\FileSkck;
 use Carbon\Carbon;
 use App\Models\Skck;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -66,10 +67,11 @@ class InputSkckService
             try {
                 $file_skck->addFile($skck->id, $dir, $filename);
             } catch (\Throwable $th) {
-                throw new BadRequestException("Gagal mengunggah foto.");
+                throw new BadRequestException("Gagal menambah data foto.");
             }
             try {
-                $foto->move($path, $filename);
+                Storage::put("$dir/$filename", $foto->getContent());
+                correctImageOrientation("$path/$filename");
             } catch (\Throwable $th) {
                 DB::rollBack();
                 throw new BadRequestException("Gagal mengunggah foto.");

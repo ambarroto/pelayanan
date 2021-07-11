@@ -14,12 +14,12 @@ class InputSuratKeluarRequest extends FormRequest
     public function rules()
     {
         return [
-            'nomor_surat' => 'required|integer',
+            'nomor_surat' => 'required|string',
             'alamat_tujuan' => 'required|string|max:255',
             'tanggal_surat' => 'required|date_format:Y-m-d',
             'perihal' => 'required|string|max:255',
             'penunjuk' => 'string|max:255',
-            'lampiran.*' => 'required|mimes:jpeg,jpg,png,pdf,doc',
+            'lampiran.*' => 'required|mimes:jpeg,jpg,png,pdf',
         ];
     }
 
@@ -27,7 +27,7 @@ class InputSuratKeluarRequest extends FormRequest
     {
         return [
             'nomor_surat.required' => 'Nomor surat perlu diisi.',
-            'nomor_surat.integer' => 'Format nomor surat salah.',
+            'nomor_surat.string' => 'Format nomor surat salah.',
             'nomor_surat.max' => 'Maksimal karakter nomor surat :max.',
             'alamat_tujuan.required' => 'Alamat tujuan perlu diisi.',
             'alamat_tujuan.string' => 'Format alamat tujuan salah.',
