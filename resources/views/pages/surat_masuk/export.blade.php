@@ -8,7 +8,7 @@
             <tbody>
                 <tr>
                     <td colspan="4" class="text-center heading">
-                        <img height="110" src="file/lambang-tulungagung.png" alt="Logo Kabupaten Tulungagung" srcset="">
+                        <img height="110" src="assets/img/Lambang-tulungagung.png" alt="Logo Kabupaten Tulungagung" srcset="">
                         <h3>PEMERINTAH KABUPATEN TULUNGAGUNG</h3>
                         <h2>KECAMATAN BOYOLANGU</h2>
                         <b><p>Jln. Raya Boyolangu No. 01 Telepon (0355) 322614</p></b>
