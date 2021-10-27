@@ -15,14 +15,14 @@ class CreatePegawaiTable extends Migration
     {
         Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_jabatan');
-            $table->integer('id_atasan')->default(0);
+            $table->integer('id_jabatan')->nullable();
+            $table->integer('id_atasan')->nullable()->default(0);
             $table->string('nama');
             $table->string('gelar_depan')->nullable();
             $table->string('gelar_belakang')->nullable();
             $table->string('pangkat')->nullable();
-            $table->string('nip')->nullable();
-            $table->string('nomor_hp');
+            $table->string('nip');
+            $table->string('nomor_hp')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
