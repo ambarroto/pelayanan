@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class GetPegawaiService
 {
     /**
+     * Return total pegawai
+     * 
+     * @return mixed
+     */
+    public static function totalPegawai()
+    {
+        return Pegawai::count();
+    }
+
+    /**
      * Return all pegawai
      * 
      * @return Pegawai

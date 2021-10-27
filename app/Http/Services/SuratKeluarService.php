@@ -9,6 +9,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class SuratKeluarService
 {
     /**
+     * Total surat keluar
+     * 
+     * @return mixed
+     */
+    public static function total()
+    {
+        return SuratKeluar::count();
+    }
+    
+    /**
      * Ambil semua data surat keluar
      * 
      * @return \Illuminate\Http\Resources\Json\JsonResource

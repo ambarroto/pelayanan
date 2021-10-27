@@ -10,6 +10,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class SuratMasukService
 {
     /**
+     * Total surat masuk
+     * 
+     * @return mixed
+     */
+    public static function total()
+    {
+        return SuratMasuk::count();
+    }
+
+    /**
      * Get all surat masuk
      * 
      * @return \Illuminate\Http\Resources\Json\JsonResource
