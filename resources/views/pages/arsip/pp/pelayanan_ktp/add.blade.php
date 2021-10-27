@@ -7,7 +7,7 @@
 
 @section('page_header')
 @include('components.header', [
-    'link' => route('arsip_rekap_data'),
+    'link' => route('arsip_pelayanan_ktp'),
     'text_link' => "Daftar $title"
 ])
 @endsection
@@ -27,9 +27,27 @@
                 </div>
                 @endif
 
-                <form class="needs-validation" novalidate action="{{ route('simpan_arsip_rekap_data') }}" method="POST" enctype="multipart/form-data">
+                <form class="needs-validation" novalidate action="{{ route('simpan_arsip_pelayanan_ktp') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="nomor_kk">Nomor KK</label>
+                            <input type="text" class="form-control @error('nomor_kk') is-invalid @enderror" id="nomor_kk" name="nomor_kk" placeholder="Nomor KK" value="{{ old("nomor_kk") }}">
+                            @error('nomor_kk')
+                            <div class="invalid-feedback">
+                            {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="nomor_nik_ktp">Nomor NIK KTP</label>
+                            <input type="text" class="form-control @error('nomor_nik_ktp') is-invalid @enderror" id="nomor_nik_ktp" name="nomor_nik_ktp" placeholder="Nomor NIK KTP" value="{{ old("nomor_nik_ktp") }}">
+                            @error('nomor_nik_ktp')
+                            <div class="invalid-feedback">
+                            {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-control-label" for="nama">Nama</label>
                             <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" placeholder="Nama" value="{{ old("nama") }}">
@@ -39,6 +57,8 @@
                             </div>
                             @enderror
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="col-md-4 mb-3">
                             <label class="form-control-label" for="file">File</label>
                             <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file" value="{{ old("file") }}">

@@ -7,7 +7,7 @@
 
 @section('page_header')
 @include('components.header', [
-    'link' => route('arsip_rekap_data'),
+    'link' => route('arsip_skm'),
     'text_link' => "Daftar $title"
 ])
 @endsection
@@ -27,13 +27,56 @@
                 </div>
                 @endif
 
-                <form class="needs-validation" novalidate action="{{ route('simpan_arsip_rekap_data') }}" method="POST" enctype="multipart/form-data">
+                <form class="needs-validation" novalidate action="{{ route('simpan_arsip_skm') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
-                            <label class="form-control-label" for="nama">Nama</label>
-                            <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" placeholder="Nama" value="{{ old("nama") }}">
-                            @error('nama')
+                            <label class="form-control-label" for="layanan">Jenis Layanan</label>
+                            <input type="text" class="form-control @error('layanan') is-invalid @enderror" id="layanan" name="layanan" placeholder="Jenis Layanan" value="{{ old("layanan") }}">
+                            @error('layanan')
+                            <div class="invalid-feedback">
+                            {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="tahun">Tahun</label>
+                            <input type="text" class="form-control @error('tahun') is-invalid @enderror" id="tahun" name="tahun" placeholder="Tahun" value="{{ old("tahun") }}">
+                            @error('tahun')
+                            <div class="invalid-feedback">
+                            {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="bulan">Bulan</label>
+                            <select name="bulan" id="bulan" class="form-control @error('bulan') is-invalid @enderror">
+                                <option></option>
+                                @foreach($bulan as $key => $item)
+                                <option value="{{ $key }}">{{ $item }}</option>
+                                @endforeach
+                            </select>
+                            @error('bulan')
+                            <div class="invalid-feedback">
+                            {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="jumlah_koresponden">Jumlah Koresponden</label>
+                            <input type="text" class="form-control @error('jumlah_koresponden') is-invalid @enderror" id="jumlah_koresponden" name="jumlah_koresponden" placeholder="Jumlah Koresponden" value="{{ old("jumlah_koresponden") }}">
+                            @error('jumlah_koresponden')
+                            <div class="invalid-feedback">
+                            {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="hasil">Hasil</label>
+                            <input type="text" class="form-control @error('hasil') is-invalid @enderror" id="hasil" name="hasil" placeholder="Hasil" value="{{ old("hasil") }}">
+                            @error('hasil')
                             <div class="invalid-feedback">
                             {{ $message }}
                             </div>
@@ -65,8 +108,8 @@
 
 @section('custom_script')
 <script>
-    $('#id_desa').select2({
-        placeholder: 'Desa',
+    $('#bulan').select2({
+        placeholder: 'Bulan',
         allowClear: true
     })
     $('#tanggal_sk').datetimepicker({

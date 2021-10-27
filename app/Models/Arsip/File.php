@@ -19,6 +19,8 @@ class File extends Model
     const LAPORAN_ALOKASI_DANA_DESA = 'LAPORAN_ALOKASI_DANA_DESA';
     const REKAP_DATA_PM = 'REKAP_DATA_PM';
     const DISPENSIASI_NIKAH = 'DISPENSIASI_NIKAH';
+    const PELAYANAN_KTP = 'PELAYANAN_KTP';
+    const SKM = 'SKM';
 
     protected $table = 'file';
 

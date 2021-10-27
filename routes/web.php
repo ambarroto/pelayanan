@@ -63,6 +63,18 @@ Route::group(['prefix' => 'arsip'], function () {
             Route::get('/tambah', 'Arsip\PP\DispensiasiNikahController@tambahDispensiasiNikah')->name('tambah_arsip_dispensiasi_nikah');
             Route::post('/tambah', 'Arsip\PP\DispensiasiNikahController@simpanDispensiasiNikah')->name('simpan_arsip_dispensiasi_nikah');
         });
+
+        Route::group(['prefix' => 'pelayanan-ktp'], function () {
+            Route::get('/', 'Arsip\PP\PelayananKTPController@daftarPelayananKTP')->name('arsip_pelayanan_ktp');
+            Route::get('/tambah', 'Arsip\PP\PelayananKTPController@tambahPelayananKTP')->name('tambah_arsip_pelayanan_ktp');
+            Route::post('/tambah', 'Arsip\PP\PelayananKTPController@simpanPelayananKTP')->name('simpan_arsip_pelayanan_ktp');
+        });
+
+        Route::group(['prefix' => 'skm'], function () {
+            Route::get('/', 'Arsip\PP\SKMController@daftarArsipSKM')->name('arsip_skm');
+            Route::get('/tambah', 'Arsip\PP\SKMController@tambahArsipSKM')->name('tambah_arsip_skm');
+            Route::post('/tambah', 'Arsip\PP\SKMController@simpanArsipSKM')->name('simpan_arsip_skm');
+        });
     });
 
     Route::group(['prefix' => 'kepegawaian'], function () {

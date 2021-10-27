@@ -64,10 +64,10 @@
                                             <a href="{{ route('arsip_dispensiasi_nikah') }}" class="nav-link">Dispensiasi Nikah</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">Pelayanan KTP</a>
+                                            <a href="{{ route('arsip_pelayanan_ktp') }}" class="nav-link">Pelayanan KTP</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">Survey Kepuasan Masyarakat (SKM)</a>
+                                            <a href="{{ route('arsip_skm') }}" class="nav-link">Survey Kepuasan Masyarakat (SKM)</a>
                                         </li>
                                     </ul>
                                 </div>

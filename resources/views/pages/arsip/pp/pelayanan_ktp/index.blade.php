@@ -2,7 +2,7 @@
 
 @section('page_header')
 @include('components.header', [
-    'link' => route('tambah_arsip_rekap_data'),
+    'link' => route('tambah_arsip_pelayanan_ktp'),
     'text_link' => "Tambah $title"
 ])
 @endsection
@@ -23,17 +23,26 @@
                 <table class="table table-flush" id="tables">
                     <thead class="thead-light">
                         <tr>
+                            <th>Tanggal</th>
+                            <th>Nomor KK</th>
+                            <th>Nomor NIK KTP</th>
                             <th>Nama</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
+                            <th>Tanggal</th>
+                            <th>Nomor KK</th>
+                            <th>Nomor NIK KTP</th>
                             <th>Nama</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @foreach ($data as $item)
                         <tr>
+                            <td>{{ tanggal($item->created_at) }}</td>
+                            <td>{{ $item->nomor_kk }}</td>
+                            <td>{{ $item->nomor_nik_ktp }}</td>
                             <td>{{ $item->nama }}</td>
                         </tr>
                         @endforeach
