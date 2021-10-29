@@ -26,13 +26,15 @@
                             <th>Nama Pegawai</th>
                             <th>No. SK</th>
                             <th>Tanggal SK</th>
+                            <th>File</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Nama Pegawai</th>
                             <th>No</th>
-                            <th>Tanggal</th>
+                            <th>Tanggal SK</th>
+                            <th>File</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -41,6 +43,13 @@
                             <td>{!! $item->pegawai->nama !!}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ tanggal($item->tanggal_sk) }}</td>
+                            <td>
+                                @if($item->file_location)
+                                <a href="{{ $item->file_location }}" target="blank">
+                                    <i class="far fa-file-pdf"></i>
+                                </a>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

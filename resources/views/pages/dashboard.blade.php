@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="col">
                         <h5 class="card-title text-uppercase text-muted mb-0">Jumlah Arsip Pelayanan Publik</h5>
-                        <span class="h2 font-weight-bold mb-0">{{ $jumlah_arsip_pm }}</span>
+                        <span class="h2 font-weight-bold mb-0">{{ $jumlah_arsip_pp }}</span>
                     </div>
                     <div class="col-auto">
                     <div class="icon icon-shape text-white rounded-circle shadow">
