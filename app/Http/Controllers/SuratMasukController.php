@@ -10,6 +10,7 @@ use App\Http\Services\SuratMasukService;
 use App\Http\Services\UpdateSuratMasukService;
 use Dompdf\Dompdf;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Spatie\PdfToImage\Pdf;
 
 class SuratMasukController extends Controller
@@ -27,11 +28,12 @@ class SuratMasukController extends Controller
      * Daftar surat masuk
      * 
      * @param \App\Http\Services\SuratMasukService $service
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\View\View
      */
-    public function index(SuratMasukService $service): View
+    public function index(SuratMasukService $service, Request $request): View
     {
-        $surat_masuk = $service->getAll();
+        $surat_masuk = $service->getAll($request);
         $title = $this->title;
         return view('pages.surat_masuk.index', compact('surat_masuk', 'title'));
     }

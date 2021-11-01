@@ -10,6 +10,7 @@
 @section('styles')
 @include('styles.datatable')
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
 
 @section('page_content')
@@ -17,6 +18,27 @@
     <div class="col">
         <div class="card">
             <!-- Card header -->
+            <div class="card-header">
+                <form class="needs-validation" novalidate action="{{ route('surat_masuk') }}" method="GET" id="formFilter">
+                    @csrf
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="nomor">Nomor Surat</label>
+                            <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" placeholder="Nomor Surat" value="{{ request("nomor_surat") }}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="alamat_surat">Alamat Surat</label>
+                            <input type="text" class="form-control" id="alamat_surat" name="alamat_surat" placeholder="Alamat Surat" value="{{ request("alamat_surat") }}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-control-label" for="tanggal_surat">Tanggal Surat</label>
+                            <input type="text" class="form-control" id="tanggal_surat" name="tanggal_surat" placeholder="Tanggal Surat" value="{{ request()->get("tanggal_surat") }}">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="clearFilter()" type="button">Clear Filter</button>
+                    <button class="btn btn-primary" type="submit">Filter</button>
+                </form>
+            </div>
             <div class="card-header">
                 <h3 class="mb-0">Daftar Surat Masuk</h3>
                 <button class="btn btn-primary btn-sm" id="export_pdf">Export (PDF)</button>
@@ -82,6 +104,8 @@
 @section('optional_scripts')
 @include('scripts.datatable')
 <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
     var dt = $('#tables').DataTable({
         dom: 'Bfrtip',
@@ -117,5 +141,25 @@
         $('input[name="id"').val(data)
         $('form#form_export').attr('action', $(this).attr('data-href')).submit()
     })
+    $('input[name="tanggal_surat"]').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear',
+            format: 'DD/MM/YYYY'
+        }
+    });
+    $('input[name="tanggal_surat"]').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('input[name="tanggal_surat"]').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+    function clearFilter() {
+        $('input[name="tanggal_surat"]').val('');
+        $('input[name="nomor_surat"]').val('');
+        $('input[name="alamat_surat"]').val('');
+    }
+
 </script>
 @endsection

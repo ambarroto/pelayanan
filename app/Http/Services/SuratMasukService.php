@@ -4,7 +4,9 @@ namespace App\Http\Services;
 
 use App\Http\Resources\SuratMasukResource;
 use App\Models\SuratMasuk;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SuratMasukService
@@ -22,11 +24,37 @@ class SuratMasukService
     /**
      * Get all surat masuk
      * 
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Resources\Json\JsonResource
      */
-    public function getAll(): JsonResource
+    public function getAll(Request $request): JsonResource
     {
-        $surat_masuk = SuratMasuk::orderBy('nomor', 'DESC')->get();
+        $tanggal_awal = null;
+        $tanggal_akhir = null;
+        if ($request->has('tanggal_surat')) {
+            $tanggal_surat = explode('-', $request->get('tanggal_surat'));
+            try {
+                $tanggal_awal = Carbon::createFromFormat('d/m/Y', trim($tanggal_surat[0]))->format('Y-m-d');
+            } catch (\Throwable $th) {
+                $tanggal_awal = null;
+            }
+            try {
+                $tanggal_akhir = Carbon::createFromFormat('d/m/Y', trim($tanggal_surat[1]))->format('Y-m-d');
+            } catch (\Throwable $th) {
+                $tanggal_akhir = null;
+            }
+        }
+        $surat_masuk = SuratMasuk::orderBy('nomor', 'DESC')->where([
+            'nomor_surat' => $request->get('nomor_surat'),
+            'alamat_surat' => $request->get('alamat_surat')
+        ]);
+        if ($tanggal_awal != null) {
+            $surat_masuk = $surat_masuk->where('tanggal_surat', '>=', $tanggal_awal);
+        }
+        if ($tanggal_akhir != null) {
+            $surat_masuk = $surat_masuk->where('tanggal_surat', '<=', $tanggal_akhir);
+        }
+        $surat_masuk = $surat_masuk->get();
         $surat_masuk = SuratMasukResource::collection($surat_masuk);
         return $surat_masuk;
     }
