@@ -25,12 +25,14 @@
                         <tr>
                             <th>Nomor</th>
                             <th>Tanggal</th>
+                            <th>File</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Nomor</th>
                             <th>Tanggal</th>
+                            <th>File</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -38,6 +40,13 @@
                         <tr>
                             <td>{{ $item->nomor }}</td>
                             <td>{{ $item->tanggal }}</td>
+                            <td>
+                                @if($item->file_location)
+                                <a href="{{ $item->file_location }}" target="blank">
+                                    <i class="far fa-file-pdf"></i>
+                                </a>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

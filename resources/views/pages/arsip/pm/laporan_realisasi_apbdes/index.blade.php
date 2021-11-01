@@ -28,6 +28,7 @@
                             <th>Semester</th>
                             <th>Anggaran</th>
                             <th>Realisasi</th>
+                            <th>File</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -37,6 +38,7 @@
                             <th>Semester</th>
                             <th>Anggaran</th>
                             <th>Realisasi</th>
+                            <th>File</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -47,6 +49,13 @@
                             <td>{{ $item->semester }}</td>
                             <td>{{ $item->anggaran }}</td>
                             <td>{{ $item->realisasi }}</td>
+                            <td>
+                                @if($item->file_location)
+                                <a href="{{ $item->file_location }}" target="blank">
+                                    <i class="far fa-file-pdf"></i>
+                                </a>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -27,6 +27,7 @@
                             <th>Nama</th>
                             <th>Tahun</th>
                             <th>Peruntukan</th>
+                            <th>File</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -35,6 +36,7 @@
                             <th>Nama</th>
                             <th>Tahun</th>
                             <th>Peruntukan</th>
+                            <th>File</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -44,6 +46,13 @@
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->tahun }}</td>
                             <td>{{ $item->peruntukan }}</td>
+                            <td>
+                                @if($item->file_location)
+                                <a href="{{ $item->file_location }}" target="blank">
+                                    <i class="far fa-file-pdf"></i>
+                                </a>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -24,17 +24,26 @@
                     <thead class="thead-light">
                         <tr>
                             <th>Nama</th>
+                            <th>File</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Nama</th>
+                            <th>File</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @foreach ($data as $item)
                         <tr>
                             <td>{{ $item->nama }}</td>
+                            <td>
+                                @if($item->file_location)
+                                <a href="{{ $item->file_location }}" target="blank">
+                                    <i class="far fa-file-pdf"></i>
+                                </a>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -27,6 +27,7 @@
                             <th>Nomor KK</th>
                             <th>Nomor NIK KTP</th>
                             <th>Nama</th>
+                            <th>File</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -35,6 +36,7 @@
                             <th>Nomor KK</th>
                             <th>Nomor NIK KTP</th>
                             <th>Nama</th>
+                            <th>File</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -44,6 +46,13 @@
                             <td>{{ $item->nomor_kk }}</td>
                             <td>{{ $item->nomor_nik_ktp }}</td>
                             <td>{{ $item->nama }}</td>
+                            <td>
+                                @if($item->file_location)
+                                <a href="{{ $item->file_location }}" target="blank">
+                                    <i class="far fa-file-pdf"></i>
+                                </a>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
