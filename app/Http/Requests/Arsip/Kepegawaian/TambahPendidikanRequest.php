@@ -18,7 +18,7 @@ class TambahPendidikanRequest extends FormRequest
             'nama' => 'required|string|max:255',
             'nomor_ijazah' => 'required|string|max:255',
             'ijazah' => 'required|mimes:pdf',
-            'transkrip' => 'required|mimes:pdf',
+            'transkrip' => 'nullable|mimes:pdf',
         ];
     }
 

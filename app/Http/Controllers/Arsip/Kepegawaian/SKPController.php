@@ -29,7 +29,6 @@ class SKPController extends Controller
 
     public function simpanSKP(TambahSKPRequest $request, TambahSKPService $service)
     {
-        dd($request->all());
         $id_pegawai = $request->input('id_pegawai');
         $tahun = $request->input('tahun');
         $nilai = $request->input('nilai');

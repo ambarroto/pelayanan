@@ -25,7 +25,7 @@ class SkPns extends Model
 
     public function getFileLocationAttribute()
     {
-        $file = $this->file()->whereJenisArsip(File::SK_PNS)->first();
+        $file = $this->files()->whereJenisArsip(File::SK_PNS)->first();
         if ($file) {
             $lokasi = $file->lokasi;
             $filename = $file->nama_file;

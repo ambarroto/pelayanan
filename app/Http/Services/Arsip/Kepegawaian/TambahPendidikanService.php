@@ -29,10 +29,10 @@ class TambahPendidikanService
      * @param string $nama
      * @param string $nomor_ijazah
      * @param UploadedFile $ijazah
-     * @param UploadedFile $transkrip
+     * @param UploadedFile|null $transkrip
      * @return Pendidikan
      */
-    public function tambah(int $id_pegawai, string $nama, string $nomor_ijazah, UploadedFile $ijazah, UploadedFile $transkrip): Pendidikan
+    public function tambah(int $id_pegawai, string $nama, string $nomor_ijazah, UploadedFile $ijazah, UploadedFile $transkrip = null): Pendidikan
     {
         $pegawai = $this->getPegawaiService->getById($id_pegawai);
         DB::beginTransaction();
@@ -67,21 +67,23 @@ class TambahPendidikanService
         ]);
         array_push($files, "$dir/$file_name_ijazah");
         /** Upload file transkrip nilai */
-        $type = $transkrip->getClientOriginalExtension();
-        $file_name_transkrip = "$nama - Transkrip nilai." . $type;
-        try {
-            Storage::put("$dir/$file_name_transkrip", $transkrip->getContent());
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw new BadRequestException($th->getMessage());
+        if ($transkrip) {
+            $type = $transkrip->getClientOriginalExtension();
+            $file_name_transkrip = "$nama - Transkrip nilai." . $type;
+            try {
+                Storage::put("$dir/$file_name_transkrip", $transkrip->getContent());
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                throw new BadRequestException($th->getMessage());
+            }
+            array_push($data_pendidikan, [
+                'jenis_arsip' => File::PENDIDIKAN,
+                'id_arsip' => $pendidikan->id,
+                'lokasi' => $dir,
+                'nama_file' => $file_name_transkrip
+            ]);
+            array_push($files, "$dir/$file_name_transkrip");
         }
-        array_push($data_pendidikan, [
-            'jenis_arsip' => File::PENDIDIKAN,
-            'id_arsip' => $pendidikan->id,
-            'lokasi' => $dir,
-            'nama_file' => $file_name_transkrip
-        ]);
-        array_push($files, "$dir/$file_name_transkrip");
         foreach ($data_pendidikan as $index => $file) {
             try {
                 $file_sk_cpns = new File();

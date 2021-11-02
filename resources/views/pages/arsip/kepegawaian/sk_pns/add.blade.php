@@ -74,7 +74,7 @@
                             @enderror
                         </div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Tambah SK CPNS</button>
+                    <button class="btn btn-primary" type="submit">Tambah SK PNS</button>
                 </form>
             </div>
         </div>
