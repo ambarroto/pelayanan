@@ -8,7 +8,7 @@
             <tbody>
                 <tr>
                     <td colspan="4" class="text-center heading">
-                        <img height="110" src="assets/img/Lambang-tulungagung.png" alt="Logo Kabupaten Tulungagung" srcset="">
+                        <img height="90" src="assets/img/Lambang-tulungagung.png" alt="Logo Kabupaten Tulungagung" srcset="">
                         <h3>PEMERINTAH KABUPATEN TULUNGAGUNG</h3>
                         <h2>KECAMATAN BOYOLANGU</h2>
                         <b><p>Jln. Raya Boyolangu No. 01 Telepon (0355) 322614</p></b>
@@ -38,8 +38,8 @@
                     <td colspan="3">{{ $surat_masuk->perihal_surat }}</td>
                 </tr>
                 <tr>
-                    <td><b>Isi disposisi</b></td>
-                    <td colspan="3">
+                    <td height="160px" colspan="4">
+                        <b>Isi disposisi :</b>
                         <p>{!! nl2br(e($surat_masuk->catatan)) !!}</p>
                     </td>
                 </tr>

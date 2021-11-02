@@ -44,15 +44,19 @@ class SuratMasukService
                 $tanggal_akhir = null;
             }
         }
-        $surat_masuk = SuratMasuk::orderBy('nomor', 'DESC')->where([
-            'nomor_surat' => $request->get('nomor_surat'),
-            'alamat_surat' => $request->get('alamat_surat')
-        ]);
+        $surat_masuk = SuratMasuk::orderBy('nomor', 'DESC');
+        if ($request->has('nomor_surat') && $request->get('nomor_surat') != null) {
+            $surat_masuk = $surat_masuk->where('nomor_surat', $request->get('nomor_surat'));
+        }
+        if ($request->has('alamat_surat') && $request->get('alamat_surat') != null) {
+            $alamat_surat = $request->get('alamat_surat');
+            $surat_masuk = $surat_masuk->where('alamat_surat', 'like', "%$alamat_surat%");
+        }
         if ($tanggal_awal != null) {
-            $surat_masuk = $surat_masuk->where('tanggal_surat', '>=', $tanggal_awal);
+            $surat_masuk = $surat_masuk->whereDate('tanggal_surat', '>=', $tanggal_awal);
         }
         if ($tanggal_akhir != null) {
-            $surat_masuk = $surat_masuk->where('tanggal_surat', '<=', $tanggal_akhir);
+            $surat_masuk = $surat_masuk->whereDate('tanggal_surat', '<=', $tanggal_akhir);
         }
         $surat_masuk = $surat_masuk->get();
         $surat_masuk = SuratMasukResource::collection($surat_masuk);

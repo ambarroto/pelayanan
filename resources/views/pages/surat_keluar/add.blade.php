@@ -40,7 +40,7 @@
                     @csrf
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
-                            <label class="form-control-label" for="nomor">Nomor Surat</label>
+                            <label class="form-control-label" for="nomor">Nomor Indeks Surat</label>
                             <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror" id="nomor_surat" name="nomor_surat" placeholder="Nomor Surat" value="{{ old("nomor_surat") }}">
                             @error('nomor_surat')
                             <div class="invalid-feedback">
@@ -98,7 +98,7 @@
                             @enderror
                         </div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Tambah Surat Masuk</button>
+                    <button class="btn btn-primary" type="submit">Tambah Surat Keluar</button>
                 </form>
             </div>
         </div>

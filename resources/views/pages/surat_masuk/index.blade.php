@@ -22,17 +22,17 @@
                 <form class="needs-validation" novalidate action="{{ route('surat_masuk') }}" method="GET" id="formFilter">
                     @csrf
                     <div class="form-row">
-                        <div class="col-md-4 mb-3">
-                            <label class="form-control-label" for="nomor">Nomor Surat</label>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-control-label" for="nomor_surat">Nomor Surat</label>
                             <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" placeholder="Nomor Surat" value="{{ request("nomor_surat") }}">
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-3 mb-3">
                             <label class="form-control-label" for="alamat_surat">Alamat Surat</label>
                             <input type="text" class="form-control" id="alamat_surat" name="alamat_surat" placeholder="Alamat Surat" value="{{ request("alamat_surat") }}">
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-3 mb-3">
                             <label class="form-control-label" for="tanggal_surat">Tanggal Surat</label>
-                            <input type="text" class="form-control" id="tanggal_surat" name="tanggal_surat" placeholder="Tanggal Surat" value="{{ request()->get("tanggal_surat") }}">
+                            <input type="text" class="form-control" autocomplete="false" id="tanggal_surat" name="tanggal_surat" placeholder="Tanggal Surat" value="{{ request()->get("tanggal_surat") }}">
                         </div>
                     </div>
                     <button class="btn btn-primary" onclick="clearFilter()" type="button">Clear Filter</button>
