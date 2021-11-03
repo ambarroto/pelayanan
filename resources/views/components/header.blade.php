@@ -26,7 +26,11 @@
                     </nav>
                 </div>
                 <div class="col-lg-6 col-5 text-right">
-                    @if(isset($link) && isset($text_link))
+                    @if(isset($link) && is_array($link))
+                    @foreach($link as $item)
+                    <a href="{{ $item['link'] }}" class="btn btn-sm btn-neutral">{{ $item['text_link'] }}</a>
+                    @endforeach
+                    @elseif(isset($link) && isset($text_link))
                     <a href="{{ $link }}" class="btn btn-sm btn-neutral">{{ $text_link }}</a>
                     @endif
                     {{-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> --}}

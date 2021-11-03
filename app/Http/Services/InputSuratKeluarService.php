@@ -31,10 +31,74 @@ class InputSuratKeluarService
         } catch (\Throwable $th) {
             throw new BadRequestException("Gagal mendapat tanggal.");
         }
-        $tahun = Carbon::now()->format('Y');
         $nomor = get_nomor(new SuratKeluar());
         try {
-            $surat_keluar = SuratKeluar::create([
+            $surat_keluar = $this->create($nomor, $nomor_surat, $alamat_tujuan, $tanggal, $perihal, $penunjuk);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw new BadRequestException($th->getMessage());
+        }
+        try {
+            $this->uploadFileSuratKeluar($surat_keluar, $lampiran);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw new BadRequestException($th->getMessage());
+        }
+        DB::commit();
+        return $surat_keluar;
+    }
+
+    /**
+     * Menyisipkan surat keluar
+     * 
+     * @param string $nomor
+     * @param string $nomor_surat
+     * @param string $alamat_tujuan
+     * @param string $tanggal
+     * @param string $perihal
+     * @param string $penunjuk
+     * @param array $lampiran
+     * @return \App\Models\SuratKeluar
+     */
+    public function sisipkan(string $nomor, string $nomor_surat, string $alamat_tujuan, string $tanggal, string $perihal, string $penunjuk, array $lampiran = []): SuratKeluar
+    {
+        DB::beginTransaction();
+        try {
+            $tanggal = Carbon::parse($tanggal)->format('Y-m-d');
+        } catch (\Throwable $th) {
+            throw new BadRequestException("Gagal mendapat tanggal.");
+        }
+        try {
+            $surat_keluar = $this->create($nomor, $nomor_surat, $alamat_tujuan, $tanggal, $perihal, $penunjuk);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw new BadRequestException($th->getMessage());
+        }
+        try {
+            $this->uploadFileSuratKeluar($surat_keluar, $lampiran);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw new BadRequestException($th->getMessage());
+        }
+        DB::commit();
+        return $surat_keluar;
+    }
+
+    /**
+     * Create surat keluar
+     * 
+     * @param string $nomor
+     * @param string $nomor_surat
+     * @param string $alamat_tujuan
+     * @param string $tanggal
+     * @param string $perihal
+     * @param string $penunjuk
+     * @return \App\Models\SuratKeluar
+     */
+    protected function create(string $nomor, string $nomor_surat, string $alamat_tujuan, string $tanggal, string $perihal, string $penunjuk): SuratKeluar
+    {
+        try {
+            $data = SuratKeluar::create([
                 'nomor' => $nomor,
                 'nomor_surat' => $nomor_surat,
                 'alamat_tujuan' => $alamat_tujuan,
@@ -44,9 +108,22 @@ class InputSuratKeluarService
                 'status' => SuratKeluar::STATUS_DONE
             ]);
         } catch (\Throwable $th) {
-            DB::rollBack();
             throw new BadRequestException("Gagal menambah data surat keluar.");
         }
+        return $data;
+    }
+
+    /**
+     * Upload file surat keluar
+     * 
+     * @param \App\Models\SuratKeluar $surat_keluar
+     * @param array $lampiran
+     * @return mixed
+     */
+    protected function uploadFileSuratKeluar(SuratKeluar $surat_keluar, array $lampiran = [])
+    {
+        $nomor = $surat_keluar->nomor;
+        $tahun = Carbon::now()->format('Y');
         $data_file_surat_keluar = [];
         $dir = "file/surat/$tahun/keluar";
         $path = public_path() . DIRECTORY_SEPARATOR . $dir;
@@ -94,7 +171,6 @@ class InputSuratKeluarService
                     ]);
                 }
             } else {
-                DB::rollBack();
                 throw new BadRequestException("Format file ke-$nomor_file tidak sesuai.");
             }
         }
@@ -106,7 +182,6 @@ class InputSuratKeluarService
                 $file_surat_keluar->addFileSuratKeluar($file['id_surat_keluar'], $file['lokasi'], $file['filename']);
                 $data_file_surat_keluar[$index]['id'] = $file_surat_keluar->id;
             } catch (\Throwable $th) {
-                DB::rollBack();
                 // Event delete file surat keluar
                 // Code disini
                 foreach ($files as $item) {
@@ -115,7 +190,5 @@ class InputSuratKeluarService
                 throw new BadRequestException($th->getMessage());
             }
         }
-        DB::commit();
-        return $surat_keluar;
     }
 }

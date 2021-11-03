@@ -33,6 +33,8 @@ Route::group(['prefix' => 'surat-keluar'], function () {
     Route::get('/', 'SuratKeluarController@index')->name('surat_keluar');
     Route::get('/tambah', 'SuratKeluarController@tambah')->name('tambah_surat_keluar');
     Route::post('/tambah', 'SuratKeluarController@input')->name('input_surat_keluar');
+    Route::get('/sisipkan', 'SuratKeluarController@sisipkanSuratKeluar')->name('sisipkan_surat_keluar');
+    Route::post('/sisipkan', 'SuratKeluarController@inputSisipkanSuratKeluar')->name('input_sisipkan_surat_keluar');
     Route::get('/{id}', 'SuratKeluarController@view')->name('detail_surat_keluar');
 });
 
@@ -122,11 +124,11 @@ Route::group(['prefix' => 'arsip'], function () {
             Route::post('/tambah', 'Arsip\PM\LPJBumdesController@simpanLPJBumdes')->name('simpan_arsip_lpj_bumdes');
         });
 
-        Route::group(['prefix' => 'laporan-realisasi-dana-desa'], function () {
-            Route::get('/', 'Arsip\PM\LaporanDanaDesaController@daftarLaporanDanaDesa')->name('arsip_laporan_dana_desa');
-            Route::get('/tambah', 'Arsip\PM\LaporanDanaDesaController@tambahLaporanDanaDesa')->name('tambah_arsip_laporan_dana_desa');
-            Route::post('/tambah', 'Arsip\PM\LaporanDanaDesaController@simpanLaporanDanaDesa')->name('simpan_arsip_laporan_dana_desa');
-        });
+        // Route::group(['prefix' => 'laporan-realisasi-dana-desa'], function () {
+        //     Route::get('/', 'Arsip\PM\LaporanDanaDesaController@daftarLaporanDanaDesa')->name('arsip_laporan_dana_desa');
+        //     Route::get('/tambah', 'Arsip\PM\LaporanDanaDesaController@tambahLaporanDanaDesa')->name('tambah_arsip_laporan_dana_desa');
+        //     Route::post('/tambah', 'Arsip\PM\LaporanDanaDesaController@simpanLaporanDanaDesa')->name('simpan_arsip_laporan_dana_desa');
+        // });
 
         Route::group(['prefix' => 'administrasi-desa'], function () {
             Route::get('/', 'Arsip\PM\AdministrasiDesaController@daftarAdministrasiDesa')->name('arsip_administrasi_desa');
@@ -134,11 +136,11 @@ Route::group(['prefix' => 'arsip'], function () {
             Route::post('/tambah', 'Arsip\PM\AdministrasiDesaController@simpanAdministrasiDesa')->name('simpan_arsip_administrasi_desa');
         });
 
-        Route::group(['prefix' => 'laporan-alokasi-dana-desa'], function () {
-            Route::get('/', 'Arsip\PM\LaporanAlokasiDanaDesaController@daftarLaporanAlokasiDanaDesa')->name('arsip_laporan_alokasi_dana_desa');
-            Route::get('/tambah', 'Arsip\PM\LaporanAlokasiDanaDesaController@tambahLaporanAlokasiDanaDesa')->name('tambah_arsip_laporan_alokasi_dana_desa');
-            Route::post('/tambah', 'Arsip\PM\LaporanAlokasiDanaDesaController@simpanLaporanAlokasiDanaDesa')->name('simpan_arsip_laporan_alokasi_dana_desa');
-        });
+        // Route::group(['prefix' => 'laporan-alokasi-dana-desa'], function () {
+        //     Route::get('/', 'Arsip\PM\LaporanAlokasiDanaDesaController@daftarLaporanAlokasiDanaDesa')->name('arsip_laporan_alokasi_dana_desa');
+        //     Route::get('/tambah', 'Arsip\PM\LaporanAlokasiDanaDesaController@tambahLaporanAlokasiDanaDesa')->name('tambah_arsip_laporan_alokasi_dana_desa');
+        //     Route::post('/tambah', 'Arsip\PM\LaporanAlokasiDanaDesaController@simpanLaporanAlokasiDanaDesa')->name('simpan_arsip_laporan_alokasi_dana_desa');
+        // });
 
         Route::group(['prefix' => 'rekap-data'], function () {
             Route::get('/', 'Arsip\PM\RekapDataController@daftarRekapData')->name('arsip_rekap_data');

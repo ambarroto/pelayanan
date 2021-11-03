@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InputSuratKeluarRequest extends FormRequest
+class SisipkanSuratKeluarRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,6 +14,7 @@ class InputSuratKeluarRequest extends FormRequest
     public function rules()
     {
         return [
+            'nomor' => 'required|string',
             'nomor_surat' => 'required|string',
             'alamat_tujuan' => 'required|string|max:255',
             'tanggal_surat' => 'required|date_format:Y-m-d',
@@ -26,6 +27,9 @@ class InputSuratKeluarRequest extends FormRequest
     public function messages()
     {
         return [
+            'nomor.required' => 'Nomor surat perlu diisi.',
+            'nomor.string' => 'Format nomor surat salah.',
+            'nomor.max' => 'Maksimal karakter nomor surat :max.',
             'nomor_surat.required' => 'Nomor indeks surat perlu diisi.',
             'nomor_surat.string' => 'Format nomor indeks surat salah.',
             'nomor_surat.max' => 'Maksimal karakter nomor indeks surat :max.',

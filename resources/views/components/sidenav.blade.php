@@ -88,15 +88,15 @@
                                         <li class="nav-item">
                                             <a href="{{ route('arsip_lpj_bumdes') }}" class="nav-link">LPJ Bumdes</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="{{ route('arsip_laporan_dana_desa') }}" class="nav-link">Laporan Dana Desa</a>
-                                        </li>
+                                        <!-- <li class="nav-item">
+                                            <a href="#" class="nav-link">Laporan Dana Desa</a>
+                                        </li> -->
                                         <li class="nav-item">
                                             <a href="{{ route('arsip_administrasi_desa') }}" class="nav-link">Administrasi Desa</a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="{{ route('arsip_laporan_alokasi_dana_desa') }}" class="nav-link">Laporan Alokasi Dana Desa</a>
-                                        </li>
+                                        <!-- <li class="nav-item">
+                                            <a href="#" class="nav-link">Laporan Alokasi Dana Desa</a>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </li>

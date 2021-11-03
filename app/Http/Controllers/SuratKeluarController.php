@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InputSuratKeluarRequest;
+use App\Http\Requests\SisipkanSuratKeluarRequest;
 use App\Http\Services\InputSuratKeluarService;
 use App\Http\Services\SuratKeluarService;
 use Illuminate\View\View;
@@ -60,6 +61,40 @@ class SuratKeluarController extends Controller
         $lampiran = $request->file('lampiran') ?: [];
         try {
             $service->input($nomor_surat, $alamat_tujuan, $perihal, $penunjuk, $tanggal, $lampiran);
+        } catch (\Throwable $th) {
+            return redirect()->back()->withInput()->with('error', $th->getMessage());
+        }
+        return redirect()->route('surat_keluar');
+    }
+
+    /**
+     * Halaman menyisipkan surat keluar
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function sisipkanSuratKeluar()
+    {
+        return view('pages.surat_keluar.sisipkan', ['title' => $this->title]);
+    }
+
+    /**
+     * Menyisipkan surat keluar
+     * 
+     * @param \App\Http\Requests\SisipkanSuratKeluarRequest $request
+     * @param \App\Http\Services\InputSuratKeluarService $service
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function inputSisipkanSuratKeluar(SisipkanSuratKeluarRequest $request, InputSuratKeluarService $service)
+    {
+        $nomor = $request->input('nomor');
+        $nomor_surat = $request->input('nomor_surat');
+        $alamat_tujuan = $request->input('alamat_tujuan');
+        $tanggal_surat = $request->input('tanggal_surat');
+        $perihal = $request->input('perihal');
+        $penunjuk = $request->input('penunjuk');
+        $lampiran = $request->file('lampiran') ?: [];
+        try {
+            $service->sisipkan($nomor, $nomor_surat, $alamat_tujuan, $tanggal_surat, $perihal, $penunjuk, $lampiran);
         } catch (\Throwable $th) {
             return redirect()->back()->withInput()->with('error', $th->getMessage());
         }

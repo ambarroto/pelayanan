@@ -2,8 +2,16 @@
 
 @section('page_header')
 @include('components.header', [
-    'link' => route('tambah_surat_keluar'),
-    'text_link' => 'Tambah Surat Keluar'
+    'link' => [
+        [
+            'link' => route('tambah_surat_keluar'),
+            'text_link' => 'Tambah Surat Keluar'
+        ],
+        [
+            'link' => route('sisipkan_surat_keluar'),
+            'text_link' => 'Sisipkan Surat Keluar'
+        ]
+    ]
 ])
 @endsection
 
